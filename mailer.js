@@ -1,16 +1,15 @@
 const nodemailer = require("nodemailer");
+require("dotenv").config();
 
 // Konfigurasi transporter menggunakan OAuth2
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     type: "OAuth2",
-    user: "perpustakaanundip2@gmail.com",
-    clientId:
-      "173110143507-8mk0frbms9aropgvomc8tpadba67c5l1.apps.googleusercontent.com",
-    clientSecret: "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",
-    refreshToken:
-      "1//04DCQSHvfqAR1CgYIARAAGAQSNwF-L9IrzRGQ__UKn1JDaZgCN7xUPp3u_xBdFz6pd9ki8O2CkV580l6l61V6onrHXtH4oQiqd6Y",
+    user: process.env.GMAIL_USER, // Gunakan variabel lingkungan untuk user
+    clientId: process.env.GOOGLE_CLIENT_ID, // Gunakan variabel lingkungan untuk clientId
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET, // Gunakan variabel lingkungan untuk clientSecret
+    refreshToken: process.env.GOOGLE_CLIENT_REFRESH_TOKEN, // Gunakan variabel lingkungan untuk refreshToken
   },
 });
 
