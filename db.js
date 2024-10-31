@@ -1,11 +1,12 @@
 const mysql = require("mysql2");
+require("dotenv").config();
 
 // Buat koneksi ke database
 const db = mysql.createConnection({
-  host: "localhost", // Ganti dengan host database Anda
-  user: "root", // Ganti dengan username MySQL Anda
-  password: "BismillahKaya123", // Ganti dengan password MySQL Anda
-  database: "perpus-undip", // Ganti dengan nama database Anda
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
 // Hubungkan ke database
