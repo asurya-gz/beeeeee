@@ -48,3 +48,55 @@ exports.verifyPengguna = (email, verificationCode, callback) => {
     callback(null, result);
   });
 };
+
+exports.getPenggunaByEmail = (email, callback) => {
+  const query = "SELECT * FROM pengguna WHERE email = ?";
+  const values = [email];
+
+  db.query(query, values, (err, result) => {
+    if (err) {
+      return callback(err, null);
+    }
+    if (result.length > 0) {
+      callback(null, result[0]); // Mengembalikan data pengguna pertama yang ditemukan
+    } else {
+      callback(null, null); // Jika tidak ada data pengguna dengan email tersebut
+    }
+  });
+};
+
+// Fungsi untuk mengedit pengguna berdasarkan email
+exports.editPenggunaByEmail = (email, updatedData, callback) => {
+  // Membangun query SQL untuk memperbarui data pengguna
+  const query = `
+    UPDATE pengguna 
+    SET name = ?, nim_nip = ?, role = ? 
+    WHERE email = ?
+  `;
+
+  // Ambil nilai dari updatedData
+  const values = [
+    updatedData.name,
+    updatedData.nim_nip,
+    updatedData.role,
+    email,
+  ];
+
+  // Jalankan query
+  db.query(query, values, (err, result) => {
+    if (err) {
+      return callback(err, null);
+    }
+
+    // Cek apakah ada baris yang terpengaruh
+    if (result.affectedRows === 0) {
+      return callback(new Error("Email tidak ditemukan"), null);
+    }
+
+    // Kembalikan hasil
+    callback(null, {
+      success: true,
+      message: "Pengguna berhasil diperbarui",
+    });
+  });
+};

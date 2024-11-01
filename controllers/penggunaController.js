@@ -91,3 +91,71 @@ exports.verifyUser = (req, res) => {
     res.status(200).json({ message: "Pengguna berhasil diverifikasi." });
   });
 };
+
+exports.getPenggunaByEmail = (req, res) => {
+  const { email } = req.body;
+
+  // Validasi input
+  if (!email) {
+    return res.status(400).json({ message: "Email diperlukan." });
+  }
+
+  penggunaModel.getPenggunaByEmail(email, (err, pengguna) => {
+    if (err) {
+      console.error("Error retrieving user by email:", err);
+      return res
+        .status(500)
+        .json({ message: "Gagal mengambil data pengguna." });
+    }
+
+    if (!pengguna) {
+      return res.status(404).json({ message: "Pengguna tidak ditemukan." });
+    }
+
+    res.status(200).json({
+      message: "Pengguna berhasil ditemukan.",
+      data: pengguna,
+    });
+  });
+};
+
+exports.editPenggunaByEmail = (req, res) => {
+  const { email } = req.body;
+  const { name, nim_nip, role } = req.body; // Ambil data yang ingin diedit dari body request
+
+  // Validasi input
+  if (!email) {
+    return res.status(400).json({ message: "Email diperlukan." });
+  }
+
+  // Validasi data yang ingin diedit
+  if (!name && !nim_nip && !role) {
+    return res
+      .status(400)
+      .json({
+        message:
+          "Setidaknya satu kolom data (name, nim_nip, role) diperlukan untuk diubah.",
+      });
+  }
+
+  // Buat objek untuk menyimpan data yang ingin diperbarui
+  const updatedData = {};
+  if (name) updatedData.name = name;
+  if (nim_nip) updatedData.nim_nip = nim_nip;
+  if (role) updatedData.role = role;
+
+  // Panggil model untuk mengedit pengguna
+  penggunaModel.editPenggunaByEmail(email, updatedData, (err, result) => {
+    if (err) {
+      console.error("Error updating user:", err);
+      return res
+        .status(500)
+        .json({ message: "Gagal memperbarui pengguna.", error: err.message });
+    }
+
+    res.status(200).json({
+      message: "Pengguna berhasil diperbarui.",
+      data: result,
+    });
+  });
+};
