@@ -100,3 +100,15 @@ exports.editPenggunaByEmail = (email, updatedData, callback) => {
     });
   });
 };
+
+// Fungsi untuk mendapatkan semua pengguna
+exports.getAllPengguna = (callback) => {
+  const query = "SELECT * FROM pengguna";
+
+  db.query(query, (err, result) => {
+    if (err) {
+      return callback(err, null);
+    }
+    callback(null, result); // Mengembalikan semua data pengguna
+  });
+};

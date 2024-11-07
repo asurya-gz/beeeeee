@@ -130,12 +130,10 @@ exports.editPenggunaByEmail = (req, res) => {
 
   // Validasi data yang ingin diedit
   if (!name && !nim_nip && !role) {
-    return res
-      .status(400)
-      .json({
-        message:
-          "Setidaknya satu kolom data (name, nim_nip, role) diperlukan untuk diubah.",
-      });
+    return res.status(400).json({
+      message:
+        "Setidaknya satu kolom data (name, nim_nip, role) diperlukan untuk diubah.",
+    });
   }
 
   // Buat objek untuk menyimpan data yang ingin diperbarui
@@ -156,6 +154,25 @@ exports.editPenggunaByEmail = (req, res) => {
     res.status(200).json({
       message: "Pengguna berhasil diperbarui.",
       data: result,
+    });
+  });
+};
+
+exports.getAllPengguna = (req, res) => {
+  penggunaModel.getAllPengguna((err, data) => {
+    if (err) {
+      console.error("Error fetching all users:", err);
+      return res
+        .status(500)
+        .json({
+          message: "Gagal mengambil data pengguna.",
+          error: err.message,
+        });
+    }
+
+    res.status(200).json({
+      message: "Data pengguna berhasil diambil.",
+      data: data,
     });
   });
 };
