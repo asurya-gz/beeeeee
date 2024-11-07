@@ -156,17 +156,11 @@ exports.getSlotsByBorrowerEmail = (email, callback) => {
 
   db.query(query, values, (err, result) => {
     if (err) {
-      return callback(err, null);
+      return callback(err, null); // Jika ada error, kirimkan error tersebut
     }
 
-    if (result.length === 0) {
-      return callback(
-        { message: "Tidak ada slot waktu yang ditemukan untuk pengguna ini" },
-        null
-      );
-    }
-
-    callback(null, result);
+    // Jika query berhasil dijalankan, kirimkan hasilnya (bisa kosong)
+    callback(null, result || []); // Jika tidak ada slot ditemukan, kirimkan array kosong
   });
 };
 

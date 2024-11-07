@@ -233,17 +233,13 @@ exports.getTimeSlotsByBorrowerEmail = (req, res) => {
       return res.status(500).json({ message: "Gagal mengambil slot waktu." });
     }
 
-    // Jika tidak ada slot ditemukan, beri pesan yang informatif
-    if (slots.length === 0) {
-      return res.status(200).json({
-        message: "Tidak ada slot waktu yang ditemukan untuk email ini.",
-        data: [],
-      });
-    }
-
+    // Kirimkan data slot waktu (bisa kosong jika tidak ada)
     res.status(200).json({
-      message: "Slot waktu berhasil ditemukan.",
-      data: slots,
+      message:
+        slots.length > 0
+          ? "Slot waktu berhasil ditemukan."
+          : "Tidak ada slot waktu yang ditemukan untuk email ini.",
+      data: slots, // slots bisa kosong jika tidak ada data
     });
   });
 };
