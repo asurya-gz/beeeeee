@@ -10,12 +10,16 @@ require("dotenv").config();
 // });
 
 // Buat koneksi database online
-const db = mysql.createConnection({
+// Buat pool koneksi ke database online
+const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
+  waitForConnections: true,
+  connectionLimit: 10, // Sesuaikan limit koneksi
+  queueLimit: 0,
 });
 
 // Hubungkan ke database
