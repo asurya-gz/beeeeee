@@ -22,8 +22,17 @@ const db = mysql.createPool({
   queueLimit: 0,
 });
 
-// Hubungkan ke database
-db.connect((err) => {
+// Hubungkan ke database lokal
+// db.connect((err) => {
+//   if (err) {
+//     console.error("Koneksi ke database gagal:", err);
+//   } else {
+//     console.log("Koneksi ke database berhasil.");
+//   }
+// });
+
+// Tes koneksi sederhana untuk memastikan pool berfungsi
+db.query("SELECT 1", (err) => {
   if (err) {
     console.error("Koneksi ke database gagal:", err);
   } else {
